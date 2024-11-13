@@ -1,0 +1,59 @@
+﻿@model IQueryable<Car>
+
+@{
+    ViewData["Title"] = "Wheel on Rent";
+}
+
+@if (Model is not null && Model.Any())
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card-deck">
+                @foreach (var item in Model)
+                {
+                    <div class="card">
+                        <img class="card-img-top" src="//placehold.it/200x100" alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    body {
+        background: #eee;
+    }
+
+    .container-fluid {
+        max-width: 1200px;
+    }
+
+    .card {
+        background: #fff;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .card img {
+            width: 100%;
+        }
+
+    [class*=row] {
+        margin-bottom: 1em;
+        justify-content: center;
+    }
+
+    [class*=col-] {
+        background: #efefef;
+        border: 1px solid #ddd;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        width: 100%;
+    }
+</style>
