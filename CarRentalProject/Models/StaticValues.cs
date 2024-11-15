@@ -2,17 +2,23 @@
 {
     public static class BookingStatus
     {
-        private static string booked = "Booked";
-        private static string notBooked = "NotBooked";
-        private static string cancelled = "Cancelled";
-        private static string upComming = "UpComing";
-        private static string completed = "Completed";
+        //private static string booked = "Booked";
+        //private static string notBooked = "NotBooked";
+        //private static string cancelled = "Cancelled";
+        //private static string upComming = "UpComing";
+        //private static string completed = "Completed";
 
-        public static string Booked { get => booked; set => booked = value; }
-        public static string NotBooked { get => notBooked; set => notBooked = value; }
-        public static string Cancelled { get => cancelled; set => cancelled = value; }
-        public static string UpComming { get => upComming; set => upComming = value; }
-        public static string Completed { get => completed; set => completed = value; }
+        //public static string Booked { get => booked; set => booked = value; }
+        //public static string NotBooked { get => notBooked; set => notBooked = value; }
+        //public static string Cancelled { get => cancelled; set => cancelled = value; }
+        //public static string UpComming { get => upComming; set => upComming = value; }
+        //public static string Completed { get => completed; set => completed = value; }
+
+        private static string notConfirmed = "Not Confirmed";
+        private static string confirmed = "Confirmed";
+
+        public static string NotConfirmed { get => notConfirmed; set => notConfirmed = value; }
+        public static string Confirmed { get => confirmed; set => confirmed = value; }
     }
 
     public static class PayementStatus

@@ -1,0 +1,74 @@
+﻿@model CarRentalProject.Models.Booking
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BookingId" />
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarId" class="control-label"></label>
+                <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+                <span asp-validation-for="CarId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickupDate" class="control-label"></label>
+                <input asp-for="PickupDate" class="form-control" />
+                <span asp-validation-for="PickupDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickupTime" class="control-label"></label>
+                <input asp-for="PickupTime" class="form-control" />
+                <span asp-validation-for="PickupTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReturnDate" class="control-label"></label>
+                <input asp-for="ReturnDate" class="form-control" />
+                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickupLocation" class="control-label"></label>
+                <input asp-for="PickupLocation" class="form-control" />
+                <span asp-validation-for="PickupLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DropoffLocation" class="control-label"></label>
+                <input asp-for="DropoffLocation" class="form-control" />
+                <span asp-validation-for="DropoffLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalCost" class="control-label"></label>
+                <input asp-for="TotalCost" class="form-control" />
+                <span asp-validation-for="TotalCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookingStatus" class="control-label"></label>
+                <input asp-for="BookingStatus" class="form-control" />
+                <span asp-validation-for="BookingStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
