@@ -1,4 +1,7 @@
-﻿namespace CarRentalProject.Models
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using NuGet.Packaging;
+
+namespace CarRentalProject.Models
 {
     public static class BookingStatus
     {
@@ -53,13 +56,19 @@
     {
         private static string available = "Available";
         private static string rented = "Rented";
-        private static string underMaintainance = "UnderMaintainance";
-        private static string removed = "Removed";
+        private static string underMaintainance = "Maintainance";
 
         public static string Available { get => available; set => available = value; }
         public static string Rented { get => rented; set => rented = value; }
         public static string UnderMaintainance { get => underMaintainance; set => underMaintainance = value; }
-        public static string Removed { get => removed; set => removed = value; }
+
+        public static List<string> AllStatus
+        {
+            get
+            {
+                return [available, rented, underMaintainance];
+            }
+        }
     }
 
 }

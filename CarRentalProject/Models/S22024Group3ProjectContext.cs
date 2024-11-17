@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using CarRentalProject.Models;
 
 namespace CarRentalProject.Models;
 
@@ -240,4 +241,6 @@ public partial class S22024Group3ProjectContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<CarRentalProject.Models.AuthorizedUserViewModel> AuthorizedUserViewModel { get; set; } = default!;
 }

@@ -9,22 +9,23 @@ using CarRentalProject.Models;
 
 namespace CarRentalProject.Controllers
 {
-    public class CarController : Controller
+    public class InvoicesController : Controller
     {
         private readonly S22024Group3ProjectContext _context;
 
-        public CarController(S22024Group3ProjectContext context)
+        public InvoicesController(S22024Group3ProjectContext context)
         {
             _context = context;
         }
 
-        // GET: Car
+        // GET: Invoices
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cars.ToListAsync());
+            var s22024Group3ProjectContext = _context.Invoices.Include(i => i.Booking);
+            return View(await s22024Group3ProjectContext.ToListAsync());
         }
 
-        // GET: Car/Details/5
+        // GET: Invoices/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +33,42 @@ namespace CarRentalProject.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars
-                .FirstOrDefaultAsync(m => m.CarId == id);
-            if (car == null)
+            var invoice = await _context.Invoices
+                .Include(i => i.Booking)
+                .FirstOrDefaultAsync(m => m.InvoiceId == id);
+            if (invoice == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            return View(invoice);
         }
 
-        // GET: Car/Create
+        // GET: Invoices/Create
         public IActionResult Create()
         {
+            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId");
             return View();
         }
 
-        // POST: Car/Create
+        // POST: Invoices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarId,Make,Model,Year,Type,LicensePlate,PricePerDay,Status")] Car car)
+        public async Task<IActionResult> Create([Bind("InvoiceId,BookingId,GeneratedDate,Amount,DueAmount,LateFees,DamageCharges,CarConditionAtReturn")] Invoice invoice)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(car);
+                _context.Add(invoice);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId", invoice.BookingId);
+            return View(invoice);
         }
 
-        // GET: Car/Edit/5
+        // GET: Invoices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,23 +76,23 @@ namespace CarRentalProject.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars.FindAsync(id);
-            if (car == null)
+            var invoice = await _context.Invoices.FindAsync(id);
+            if (invoice == null)
             {
                 return NotFound();
             }
-            ViewData["CarStatus"] = new SelectList(CarStatus.AllStatus);
-            return View(car);
+            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId", invoice.BookingId);
+            return View(invoice);
         }
 
-        // POST: Car/Edit/5
+        // POST: Invoices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CarId,Make,Model,Year,Type,LicensePlate,PricePerDay,Status")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("InvoiceId,BookingId,GeneratedDate,Amount,DueAmount,LateFees,DamageCharges,CarConditionAtReturn")] Invoice invoice)
         {
-            if (id != car.CarId)
+            if (id != invoice.InvoiceId)
             {
                 return NotFound();
             }
@@ -97,12 +101,12 @@ namespace CarRentalProject.Controllers
             {
                 try
                 {
-                    _context.Update(car);
+                    _context.Update(invoice);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarExists(car.CarId))
+                    if (!InvoiceExists(invoice.InvoiceId))
                     {
                         return NotFound();
                     }
@@ -113,10 +117,11 @@ namespace CarRentalProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId", invoice.BookingId);
+            return View(invoice);
         }
 
-        // GET: Car/Delete/5
+        // GET: Invoices/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,35 +129,35 @@ namespace CarRentalProject.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars
-                .FirstOrDefaultAsync(m => m.CarId == id);
-            if (car == null)
+            var invoice = await _context.Invoices
+                .Include(i => i.Booking)
+                .FirstOrDefaultAsync(m => m.InvoiceId == id);
+            if (invoice == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            return View(invoice);
         }
 
-        // POST: Car/Delete/5
+        // POST: Invoices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var car = await _context.Cars.FindAsync(id);
-            if (car != null)
+            var invoice = await _context.Invoices.FindAsync(id);
+            if (invoice != null)
             {
-                _context.Cars.Remove(car);
+                _context.Invoices.Remove(invoice);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarExists(int id)
+        private bool InvoiceExists(int id)
         {
-            return _context.Cars.Any(e => e.CarId == id);
+            return _context.Invoices.Any(e => e.InvoiceId == id);
         }
-
     }
 }
