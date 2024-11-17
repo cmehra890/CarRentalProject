@@ -116,7 +116,7 @@ namespace CarRentalProject.Controllers
         }
 
         // GET: Booking/Edit/5
-        
+
         //[Authorize(Roles ="Customer")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -127,14 +127,14 @@ namespace CarRentalProject.Controllers
 
             var aspUserId = User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            if(aspUserId == null)
+            if (aspUserId == null)
             {
                 return Unauthorized();
             }
 
             var userId = _context.UserDetails?.FirstOrDefault(x => x.AspNetUserId == aspUserId).UserId;
 
-            if(userId == null)
+            if (userId == null)
             {
                 return NotFound();
             }
@@ -247,7 +247,7 @@ namespace CarRentalProject.Controllers
 
         public IActionResult UpdatePaymentStatus(int id, [Bind("PaymentId,PaymentId,Amount,PaymentMethod,TransactionId")] Payment payment)
         {
-            if(id != payment.BookingId)
+            if (id != payment.BookingId)
             {
                 return NotFound();
             }
@@ -258,17 +258,17 @@ namespace CarRentalProject.Controllers
 
             decimal payedAmount = payment.Amount;
 
-            if(actualAmount != 0)
+            if (actualAmount != 0)
             {
 
-                if(actualAmount - payedAmount > 0)
+                if (actualAmount - payedAmount > 0)
                 {
                     paymentStatus = PayementStatus.PartiallyPaid;
 
                     ////currently partially payment is not available
                     //return View();
                 }
-                else if(actualAmount - payedAmount == 0)
+                else if (actualAmount - payedAmount == 0)
                 {
                     paymentStatus = PayementStatus.Paid;
                 }
@@ -279,8 +279,8 @@ namespace CarRentalProject.Controllers
 
                 var paymentEntered = _context.Payments.Where(x => x.PaymentId == payment.PaymentId).FirstOrDefault();
 
-                if(paymentEntered != null) 
-                { 
+                if (paymentEntered != null)
+                {
                     paymentEntered.PaymentMethod = payment.PaymentMethod;
                     paymentEntered.Amount = payment.Amount;
                     paymentEntered.TransactionId = payment.TransactionId;
@@ -306,6 +306,18 @@ namespace CarRentalProject.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult InitiatePayment(int bookingId)
+        {
+            var amountToPay = _context.Bookings.Where(x => x.BookingId == bookingId).Select(x => x.TotalCost).FirstOrDefault();
+
+            var paymentId = _context.Payments.Where(x => x.BookingId == bookingId).Select(x => x.PaymentId).FirstOrDefault();
+
+            _contextAccessor.HttpContext.Session.SetString("amount_to_pay", Convert.ToString(amountToPay));
+            _contextAccessor.HttpContext.Session.SetString("internal_payment_id", Convert.ToString(paymentId));
+
+            return View(); // return to view
         }
     }
 }

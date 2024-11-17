@@ -45,28 +45,28 @@ namespace CarRentalProject.Controllers
         }
 
         // GET: Invoices/Create
-        public IActionResult Create()
-        {
-            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId");
+        //    return View();
+        //}
 
         // POST: Invoices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InvoiceId,BookingId,GeneratedDate,Amount,DueAmount,LateFees,DamageCharges,CarConditionAtReturn")] Invoice invoice)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(invoice);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId", invoice.BookingId);
-            return View(invoice);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("InvoiceId,BookingId,GeneratedDate,Amount,DueAmount,LateFees,DamageCharges,CarConditionAtReturn")] Invoice invoice)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(invoice);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId", invoice.BookingId);
+        //    return View(invoice);
+        //}
 
         // GET: Invoices/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -81,7 +81,10 @@ namespace CarRentalProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId", invoice.BookingId);
+
+            var currentBooking = _context.Bookings.Where(b => b.BookingId == invoice.BookingId);
+
+            ViewData["BookingId"] = new SelectList(currentBooking, "BookingId", "BookingId", invoice.BookingId);
             return View(invoice);
         }
 
@@ -122,38 +125,38 @@ namespace CarRentalProject.Controllers
         }
 
         // GET: Invoices/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var invoice = await _context.Invoices
-                .Include(i => i.Booking)
-                .FirstOrDefaultAsync(m => m.InvoiceId == id);
-            if (invoice == null)
-            {
-                return NotFound();
-            }
+        //    var invoice = await _context.Invoices
+        //        .Include(i => i.Booking)
+        //        .FirstOrDefaultAsync(m => m.InvoiceId == id);
+        //    if (invoice == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(invoice);
-        }
+        //    return View(invoice);
+        //}
 
-        // POST: Invoices/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var invoice = await _context.Invoices.FindAsync(id);
-            if (invoice != null)
-            {
-                _context.Invoices.Remove(invoice);
-            }
+        //// POST: Invoices/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var invoice = await _context.Invoices.FindAsync(id);
+        //    if (invoice != null)
+        //    {
+        //        _context.Invoices.Remove(invoice);
+        //    }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool InvoiceExists(int id)
         {
